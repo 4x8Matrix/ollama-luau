@@ -4,8 +4,11 @@ description = "Luau ollama API"
 authors = ["AsyncMatrix (hi@asyncmatrix.dev)"]
 license = "MIT"
 
+includes = ["src", "docs", "src/**/*", "docs/**/*", "pesde.toml", "LICENSE", "README"]
+
 [target]
 environment = "lune"
+lib = "src/init.luau"
 
 [indices]
 default = "https://github.com/pesde-pkg/index"
