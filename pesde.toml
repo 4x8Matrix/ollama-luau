@@ -1,0 +1,11 @@
+name = "4x8matrix/ollama"
+version = "0.1.0"
+description = "Luau ollama API"
+authors = ["AsyncMatrix (hi@asyncmatrix.dev)"]
+license = "MIT"
+
+[target]
+environment = "lune"
+
+[indices]
+default = "https://github.com/pesde-pkg/index"
