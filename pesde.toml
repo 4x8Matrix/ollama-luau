@@ -4,7 +4,7 @@ description = "Luau ollama API"
 authors = ["AsyncMatrix (hi@asyncmatrix.dev)"]
 license = "MIT"
 
-includes = ["src", "docs", "src/**/*", "docs/**/*", "pesde.toml", "LICENSE", "README"]
+includes = ["src", "docs", "src/**/*", "docs/**/*", "pesde.toml", "LICENSE", "README.md"]
 
 [target]
 environment = "lune"
