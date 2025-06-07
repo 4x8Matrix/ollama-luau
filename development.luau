@@ -14,7 +14,7 @@ local history = {
 }
 
 local response = session:Chat({
-	model = "PetrosStav/gemma3-tools:12b",
+	model = "PetrosStav/gemma3-tools:27b",
 	messages = history :: any,
 	tools = {
 		{
@@ -29,6 +29,8 @@ local response = session:Chat({
 })
 
 table.insert(history, response.message :: any)
+
+print(response)
 
 if response.message.tool_calls then
 	for _, tool_call in response.message.tool_calls do
@@ -46,7 +48,7 @@ if response.message.tool_calls then
 end
 
 local response = session:Chat({
-	model = "PetrosStav/gemma3-tools:12b",
+	model = "PetrosStav/gemma3-tools:27b",
 	messages = history :: any,
 	tools = {
 		{

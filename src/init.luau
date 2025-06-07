@@ -1,4 +1,5 @@
 local net = require("@lune/net")
+local serde = require("@lune/serde")
 
 --[=[
 	@class Ollama
@@ -31,7 +32,7 @@ function Ollama.Prototype.GetRunningModels(self: Instance)
 		method = "GET",
 	})
 
-	return net.jsonDecode(request.body) :: {
+	return serde.decode("json", request.body) :: {
 		models: { RunningModel },
 	}
 end
@@ -47,13 +48,13 @@ function Ollama.Prototype.GenerateEmbeddings(self: Instance, model: string, ...:
 	local request = net.request({
 		url = `http://{self.url}:{self.port or 11434}/api/embed`,
 		method = "POST",
-		body = net.jsonEncode({
+		body = serde.encode("json", {
 			model = model,
 			input = { ... },
 		}),
 	})
 
-	return net.jsonDecode(request.body) :: {
+	return serde.decode("json", request.body) :: {
 		model: string,
 		embeddings: { { number } },
 		total_duration: number,
@@ -73,14 +74,14 @@ function Ollama.Prototype.PushModel(self: Instance, model: string, insecure: boo
 	local request = net.request({
 		url = `http://{self.url}:{self.port or 11434}/api/push`,
 		method = "POST",
-		body = net.jsonEncode({
+		body = serde.encode("json", {
 			model = model,
 			insecure = insecure,
 			stream = false,
 		}),
 	})
 
-	return net.jsonDecode(request.body) :: {
+	return serde.decode("json", request.body) :: {
 		status: string,
 	}
 end
@@ -97,14 +98,14 @@ function Ollama.Prototype.PullModel(self: Instance, model: string, insecure: boo
 	local request = net.request({
 		url = `http://{self.url}:{self.port or 11434}/api/pull`,
 		method = "POST",
-		body = net.jsonEncode({
+		body = serde.encode("json", {
 			model = model,
 			insecure = insecure,
 			stream = false,
 		}),
 	})
 
-	return net.jsonDecode(request.body) :: {
+	return serde.decode("json", request.body) :: {
 		status: string,
 	}
 end
@@ -120,7 +121,7 @@ function Ollama.Prototype.DeleteModel(self: Instance, model: string)
 	local request = net.request({
 		url = `http://{self.url}:{self.port or 11434}/api/delete`,
 		method = "DELETE",
-		body = net.jsonEncode({
+		body = serde.encode("json", {
 			model = model,
 		}),
 	})
@@ -139,13 +140,13 @@ function Ollama.Prototype.GetModelInformation(self: Instance, model: string, ver
 	local request = net.request({
 		url = `http://{self.url}:{self.port or 11434}/api/show`,
 		method = "POST",
-		body = net.jsonEncode({
+		body = serde.encode("json", {
 			model = model,
 			verbose = verbose,
 		}),
 	})
 
-	return net.jsonDecode(request.body) :: {
+	return serde.decode("json", request.body) :: {
 		modelfile: string,
 		parameters: string,
 		template: string,
@@ -176,7 +177,7 @@ function Ollama.Prototype.GetLocalModels(self: Instance)
 		method = "GET",
 	})
 
-	return net.jsonDecode(request.body) :: {
+	return serde.decode("json", request.body) :: {
 		models: { Model },
 	}
 end
@@ -192,7 +193,7 @@ function Ollama.Prototype.CopyModel(self: Instance, source: string, destination:
 	local request = net.request({
 		url = `http://{self.url}:{self.port or 11434}/api/copy`,
 		method = "POST",
-		body = net.jsonEncode({
+		body = serde.encode("json", {
 			source = source,
 			destination = destination,
 		}),
@@ -238,7 +239,7 @@ function Ollama.Prototype.CreateModel(
 	local request = net.request({
 		url = `http://{self.url}:{self.port or 11434}/api/create`,
 		method = "POST",
-		body = net.jsonEncode({
+		body = serde.encode("json", {
 			model = model,
 			modelfile = modelfile,
 			stream = false,
@@ -287,7 +288,7 @@ function Ollama.Prototype.Chat(
 	local request = net.request({
 		url = `http://{self.url}:{self.port or 11434}/api/chat`,
 		method = "POST",
-		body = net.jsonEncode({
+		body = serde.encode("json", {
 			model = parameters.model,
 			messages = parameters.messages,
 			tools = parameters.tools and ollamaTools or nil,
@@ -298,7 +299,7 @@ function Ollama.Prototype.Chat(
 		}),
 	})
 
-	return net.jsonDecode(request.body) :: {
+	return serde.decode("json", request.body) :: {
 		model: string,
 		created_at: string,
 		message: {
@@ -354,7 +355,7 @@ function Ollama.Prototype.Generate(
 	local request = net.request({
 		url = `http://{self.url}:{self.port or 11434}/api/generate`,
 		method = "POST",
-		body = net.jsonEncode({
+		body = serde.encode("json", {
 			model = parameters.model,
 			prompt = parameters.prompt,
 			suffix = parameters.suffix,
@@ -370,7 +371,7 @@ function Ollama.Prototype.Generate(
 		}),
 	})
 
-	return net.jsonDecode(request.body) :: {
+	return serde.decode("json", request.body) :: {
 		model: string,
 		created_at: string,
 		response: string,
